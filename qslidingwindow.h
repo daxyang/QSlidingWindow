@@ -36,7 +36,8 @@ struct consume_list_t
 };
 
 
-class QSLIDINGWINDOWSHARED_EXPORT QSlidingWindow
+//class QSLIDINGWINDOWSHARED_EXPORT QSlidingWindow
+class QSlidingWindow
 {
 
 public:
