@@ -1,8 +1,8 @@
 #ifndef QSLIDINGWINDOW_H
 #define QSLIDINGWINDOW_H
 
-#include "qslidingwindow_global.h"
-#include "qslidingwindowconsume.h"
+//#include "qslidingwindow_global.h"
+#include "QSlidingWindowConsume.h"
 
 #define DEBUG 1
 #include "stdlib.h"

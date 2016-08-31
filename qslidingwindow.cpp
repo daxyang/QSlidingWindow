@@ -1,4 +1,4 @@
-#include "qslidingwindow.h"
+#include "QSlidingWindow.h"
 #include "math.h"
 
 QSlidingWindow::QSlidingWindow()
@@ -22,9 +22,11 @@ void QSlidingWindow::sliding_init(u32 len, char *buffer)
     wnd_size = len >> 2;     //滑窗大小，不能超过缓冲区的一半；
 
     SHIFT_BITS = 32 - int(log(len) / log(2));  //因为缓冲区大小不是2^32,所以最高位需要移动第32位进行判定大小，SHIFT_BITS即移位位数
-    printf("[SligWnd] all_size:%d,wnd_size:%d,SHIFT:%d %f\n",len,wnd_size,SHIFT_BITS,log(len)/log(2));
+    //printf("[SligWnd] all_size:%d,wnd_size:%d,SHIFT:%d %f\n",len,wnd_size,SHIFT_BITS,log(len)/log(2));
     head = (head_buf_t *)chrHead;  //保存数据的头格式
-    memcpy(head->flag,__HEAD,HEAD_LEN); //将固定头写入
+    //<delete by Antony 2016-8-26>
+    //memcpy(head->flag,__HEAD,HEAD_LEN); //将固定头写入
+    //<!2016-8-26>
     consume_linklist_init(); //初始化用户链表
     head->rev1 = 0;
 }
@@ -37,8 +39,11 @@ void QSlidingWindow::sliding_init(u32 len, char *buffer)
 */
 void QSlidingWindow::write_data_to_buffer(u32 data_len, char *data,struct _frame_info_t *frame)
 {
-    head->pkg_len = data_len;//向头中添加包的长度
-    head->frame.frame_type = frame->frame_type; //向头中添加帧类型
+  //<modify by Antony 2016-8-25>
+  //  head->pkg_len = data_len;//向头中添加包的长度
+  //  head->frame.frame_type = frame->frame_type; //向头中添加帧类型
+  BUILD_PKG_HEAD(head,data_len,frame);
+  //<!2016-8-26>
     if((dataBuffer->write_next_seq + HEAD_SIZE + data_len) <= dataBuffer->size)
     {
         memcpy(dataBuffer->buffer + dataBuffer->write_next_seq,chrHead,HEAD_SIZE);  //将数据头写入缓冲区
